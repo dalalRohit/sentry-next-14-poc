@@ -35,12 +35,12 @@ export default function RootLayout({
     Sentry.setUser({id:userId,email:""})
   }
 
-  fetch('https://jsonplaceholder.typicode.com/todos/')
-      .then(response =>  {
-        if(response.ok) throw new Error("Testing error from fetch.then")
-        return response.json()
-      })
-      .then(json => console.log(json))
+  // fetch('https://jsonplaceholder.typicode.com/todos/')
+  //     .then(response =>  {
+  //       if(response.ok) throw new Error("Testing error from fetch.then")
+  //       return response.json()
+  //     })
+  //     .then(json => console.log(json))
 
   return (
     <html lang="en">

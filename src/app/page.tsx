@@ -1,4 +1,3 @@
-import { captureException } from '@sentry/nextjs';
 import Image from 'next/image';
 
 export default async function Home() {
@@ -10,7 +9,6 @@ export default async function Home() {
     const data = await res.json();
     console.log('data', data);
   } catch (err) {
-    captureException('Error from page.tsx');
     console.log('There was an error', err);
   }
 

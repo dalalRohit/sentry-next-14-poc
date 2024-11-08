@@ -1,46 +1,46 @@
-import {withSentryConfig} from '@sentry/nextjs';
+import { withSentryConfig } from '@sentry/nextjs';
 /** @type {import('next').NextConfig} */
 const nextConfig = {};
 
+export default withSentryConfig(
+  withSentryConfig(nextConfig, {
+    // For all available options, see:
+    // https://github.com/getsentry/sentry-webpack-plugin#options
 
-export default withSentryConfig(withSentryConfig(nextConfig, {
+    org: 'rohit-dalal',
+    project: 'nextjs-14-poc',
+    sentryUrl: 'https://sentry.io/',
 
-// For all available options, see:
-// https://github.com/getsentry/sentry-webpack-plugin#options
+    // Only print logs for uploading source maps in CI
+    silent: !process.env.CI,
 
-org: "rohit-dalal",
-project: "nextjs-14-poc",
-sentryUrl: "https://sentry.io/",
+    // For all available options, see:
+    // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
 
-// Only print logs for uploading source maps in CI
-silent: !process.env.CI,
+    // Upload a larger set of source maps for prettier stack traces (increases build time)
+    widenClientFileUpload: true,
 
-// For all available options, see:
-// https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
+    // Automatically annotate React components to show their full name in breadcrumbs and session replay
+    reactComponentAnnotation: {
+      enabled: true
+    },
 
-// Upload a larger set of source maps for prettier stack traces (increases build time)
-widenClientFileUpload: true,
+    // Route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
+    // This can increase your server load as well as your hosting bill.
+    // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
+    // side errors will fail.
+    tunnelRoute: '/monitoring',
 
-// Automatically annotate React components to show their full name in breadcrumbs and session replay
-reactComponentAnnotation: {
-enabled: true,
-},
+    // Hides source maps from generated client bundles
+    hideSourceMaps: true,
 
-// Route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
-// This can increase your server load as well as your hosting bill.
-// Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
-// side errors will fail.
-tunnelRoute: "/monitoring",
+    // Automatically tree-shake Sentry logger statements to reduce bundle size
+    disableLogger: false,
 
-// Hides source maps from generated client bundles
-hideSourceMaps: true,
-
-// Automatically tree-shake Sentry logger statements to reduce bundle size
-disableLogger: false,
-
-// Enables automatic instrumentation of Vercel Cron Monitors. (Does not yet work with App Router route handlers.)
-// See the following for more information:
-// https://docs.sentry.io/product/crons/
-// https://vercel.com/docs/cron-jobs
-automaticVercelMonitors: true,
-}));
+    // Enables automatic instrumentation of Vercel Cron Monitors. (Does not yet work with App Router route handlers.)
+    // See the following for more information:
+    // https://docs.sentry.io/product/crons/
+    // https://vercel.com/docs/cron-jobs
+    automaticVercelMonitors: true
+  })
+);
